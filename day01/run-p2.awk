@@ -1,5 +1,5 @@
 #!/usr/bin/env awk -f
-BEGIN { x = 50 }
+BEGIN { x = 50; p = 50 }
 {
     n = substr($1, 2)
 
