@@ -1,9 +1,10 @@
 #!/usr/bin/env awk -f
 
-function sum_neighbs(g, x, y) {
-    return   g[x-1, y-1] + g[x, y-1] + g[x+1, y-1]\
+function valid(g, x, y) {
+    return g[x, y] && ((\
+             g[x-1, y-1] + g[x, y-1] + g[x+1, y-1]\
            + g[x-1, y]               + g[x+1, y]\
-           + g[x-1, y+1] + g[x, y+1] + g[x+1, y+1]
+           + g[x-1, y+1] + g[x, y+1] + g[x+1, y+1]) < 4)
 }
 
 BEGIN { FS="" }
@@ -11,7 +12,7 @@ BEGIN { FS="" }
 END {
     for (y = 1; y <= NR; y++) {
         for (x = 1; x <= NF; x++) {
-            if (g[x, y] && sum_neighbs(g, x, y) < 4) {
+            if (valid(g, x, y)) {
                 r += 1
             }
         }
@@ -24,7 +25,7 @@ END {
         v = 0
         for (y = 1; y <= NR; y++) {
             for (x = 1; x <= NF; x++) {
-                if (g[x, y] && sum_neighbs(g, x, y) < 4) {
+                if (valid(g, x, y)) {
                     r += 1
                     g[x, y] = 0
                     v = 1
