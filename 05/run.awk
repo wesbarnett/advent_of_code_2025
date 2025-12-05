@@ -31,23 +31,25 @@ END {
     print "PART 1:", r 
 
     # merge overlapping ranges
+    # requires ranges to be sorted by lower bound
     k = 1
     for (i = 1; i <= n; i++) {
-        start = x0[i]
-        end = x1[i]
+        m0[k] = x0[i]
+        m1[k] = x1[i]
 
-        if (merged_1[k-1] >= end) continue
+        # Already merged
+        # Upper bound of merged is greater than this upper bound
+        if (m1[k-1] >= m1[k]) continue
 
         for (j = i+1; j <= n; j++) {
-            if (x0[j] <= end) {
-                end = end > x1[j] ? end : x1[j]
+            # Upper bound of current is in range of candidate
+            # Move upper bound to candidate's upper bound
+            if (x0[j] <= m1[k] && m1[k] <= x1[j]) {
+                m1[k] = x1[j]
             }
         }
-
-        merged_0[k] = start
-        merged_1[k] = end
         k++
     }
-    for (i = 1; i <= k-1; i++) r2 += merged_1[i] - merged_0[i] + 1
+    for (i = 1; i <= k-1; i++) r2 += m1[i] - m0[i] + 1
     print "PART 2:", r2
 }
