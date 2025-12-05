@@ -1,15 +1,11 @@
 #!/usr/bin/env gawk -f
-#
-function helper(x0, x1, first, last) {
+
+function qsort(x0, x1, first, last) {
     if (first < last) {
         split_point = partition(x0, x1, first, last)
-        helper(x0, x1, first, split_point-1)
-        helper(x0, x1, split_point+1, last) 
+        qsort(x0, x1, first, split_point-1)
+        qsort(x0, x1, split_point+1, last) 
     }
-}
-
-function qsort(x0, x1, nr) {
-    helper(x0, x1, 1, nr)
 }
 
 function partition(x0, x1, first, last) {
@@ -69,8 +65,9 @@ END {
     print "PART 1:", r 
 
     # Sort ranges by start of range
-    qsort(x0, x1, n)
+    qsort(x0, x1, 1, n)
 
+    # Merge overlapping ranges
     k = 1
     for (i = 1; i <= n; i++) {
         start = x0[i]
