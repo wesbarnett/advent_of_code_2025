@@ -4,10 +4,20 @@ function alen(A, i, k) {
     return k
 }
 
-function qsort(A, idx) {
-    n = alen(A)
-    for (i = 1; i <= n; i++) idx[i] = i
+function qsort(A) {
+    # Performs quick sort in place
     qsort_(A, idx, 1, n)
+}
+
+function qsorti(A, idx) {
+    # Performs quick sort but doesn't modify the input array
+    # Returns idx to user which is the index sorted
+    n = alen(A)
+    for (i = 1; i <= n; i++) {
+        B[i] = A[i]
+        idx[i] = i
+    }
+    qsort_(B, idx, 1, n)
 }
 
 function qsort_(A, idx, first, last) {
