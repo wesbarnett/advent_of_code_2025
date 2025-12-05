@@ -1,6 +1,6 @@
 # advent-of-code-2025
 
-My personal solutions to [Advent of Code](https://adventofcode.com) puzzles for 2025.
+My personal solutions to [Advent of Code](https://adventofcode.com) puzzles for 2025 using `awk`.
 
 To download your puzzle inputs, get your session cookie from the browser when logged in at [Advent of Code](https://adventofcode.com). Save it in an environment variable named `AOC_COOKIE`.
 
