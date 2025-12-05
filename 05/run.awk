@@ -1,44 +1,22 @@
 #!/usr/bin/env gawk -f
 
-@include "qsort.awk"
-
-function merge_ranges(n, x0, x1, merged_0, merged_1,     i) {
-    # Merge ranges together, eliminating overlaps
-    # Inputs:
-    #   n = size of input arrays
-    #   x0 = array of lower ends of ranges
-    #   x1 = array of upper ends of ranges
-    #   merged_0 = array of upper ends of merged ranges
-    #   merged_1 = array of upper ends of merged ranges
-    # Returns: size of output arrays
-
-    qsorti(x0, idx)
-
-    k = 1
-    for (i = 1; i <= n; i++) {
-        start = x0[idx[i]]
-        end = x1[idx[i]]
-
-        if (merged_1[k-1] >= end) continue
-
-        for (j = i+1; j <= n; j++) {
-            if (x0[idx[j]] <= end) {
-                end = end > x1[idx[j]] ? end : x1[idx[j]]
-            }
-        }
-
-        merged_0[k] = start
-        merged_1[k] = end
-        k++
-    }
-    return k-1
-}
-
-
 BEGIN { FS = "-" }
 /^[0-9]+-[0-9]+$/ { 
     x0[NR] = $1
     x1[NR] = $2
+
+    # sorting needed for merging overlapping ranges
+    j = NR
+    while (x0[j] <= x0[j-1]) {
+        tmp = x0[j-1]
+        x0[j-1] = x0[j]
+        x0[j] = tmp
+
+        tmp = x1[j-1]
+        x1[j-1] = x1[j]
+        x1[j] = tmp
+        j--
+    }
     n = NR
 }
 /^[0-9]+$/ { 
@@ -52,7 +30,24 @@ BEGIN { FS = "-" }
 END { 
     print "PART 1:", r 
 
-    n = merge_ranges(n, x0, x1, merged_0, merged_1)
-    for (i = 1; i <= n; i++) r2 += merged_1[i] - merged_0[i] + 1
+    # merge overlapping ranges
+    k = 1
+    for (i = 1; i <= n; i++) {
+        start = x0[i]
+        end = x1[i]
+
+        if (merged_1[k-1] >= end) continue
+
+        for (j = i+1; j <= n; j++) {
+            if (x0[j] <= end) {
+                end = end > x1[j] ? end : x1[j]
+            }
+        }
+
+        merged_0[k] = start
+        merged_1[k] = end
+        k++
+    }
+    for (i = 1; i <= k-1; i++) r2 += merged_1[i] - merged_0[i] + 1
     print "PART 2:", r2
 }
