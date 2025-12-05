@@ -1,4 +1,4 @@
-#!/usr/bin/env gawk -f
+#!/usr/bin/env awk -f
 
 BEGIN { FS = "-" }
 /^[0-9]+-[0-9]+$/ { 
