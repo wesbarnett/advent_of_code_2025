@@ -6,16 +6,9 @@ BEGIN { FS = "-" }
     x1[NR] = $2
 
     # sorting needed for merging overlapping ranges
-    j = NR
-    while (x0[j] <= x0[j-1]) {
-        tmp = x0[j-1]
-        x0[j-1] = x0[j]
-        x0[j] = tmp
-
-        tmp = x1[j-1]
-        x1[j-1] = x1[j]
-        x1[j] = tmp
-        j--
+    for (i = NR; x0[i] <= x0[i-1]; i--) {
+        t = x0[i-1]; x0[i-1] = x0[i]; x0[i] = t
+        t = x1[i-1]; x1[i-1] = x1[i]; x1[i] = t
     }
     n = NR
 }
