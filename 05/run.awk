@@ -2,14 +2,15 @@
 
 BEGIN { FS = "-" }
 /^[0-9]+-[0-9]+$/ { 
-    x0[NR] = $1
-    x1[NR] = $2
+    x0[NR] = $1 # lower bound
+    x1[NR] = $2 # upper bound
 
     # sorting needed for merging overlapping ranges
     for (i = NR; x0[i] <= x0[i-1]; i--) {
         t = x0[i-1]; x0[i-1] = x0[i]; x0[i] = t
         t = x1[i-1]; x1[i-1] = x1[i]; x1[i] = t
     }
+
     n = NR
 }
 /^[0-9]+$/ { 
