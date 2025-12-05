@@ -17,7 +17,7 @@ BEGIN { FS = "-" }
     n = NR
 }
 /^[0-9]+$/ { 
-    for (i=1; i<=n; i++) {
+    for (i = 1; i <= n; i++) {
         if (x[0, i] <= $0 && $0 <= x[1, i]) {
             r += 1
             next
@@ -29,8 +29,8 @@ END {
 
     # merge overlapping ranges
     # requires ranges to be sorted by lower bound
-    k = 1
-    for (i = 1; i <= n; i++) {
+    # https://www.geeksforgeeks.org/dsa/merging-intervals/#expected-approach-checking-overlapping-intervals-only-onlogn-time-and-o1-space
+    for (k = i = 1; i <= n; i++) {
 
         # If current interval overlaps with last interval, merge them
         if (x[0, i] <= m[1, k-1]) {
