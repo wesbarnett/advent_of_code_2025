@@ -14,8 +14,8 @@ For example, for day 1 do:
 curl --cookie session=$AOC_COOKIE https://adventofcode.com/2025/day/1/input > input
 ```
 
-To run the solutions do:
+To run the solutions for a day do:
 
 ```
-./run.awk input
+./run input
 ```
