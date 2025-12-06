@@ -2,17 +2,11 @@
 /[0-9].*/ {
     if ($NF == "*") {
         r += x
-        print "-----"
-        print r
-        print $NF
         x = 1
         operator = "*"
     }
     else if ($NF == "+") {
         r += x
-        print "-----"
-        print r
-        print $NF
         x = 0
         operator = "+"
     }
@@ -21,6 +15,5 @@
     } else if (operator == "+") {
         x += $1
     }
-    print $1, x
 }
-END { r += x; print "RESULT:", r }
+END { r += x; print r }
