@@ -1,0 +1,2 @@
+#!/bin/bash
+./transpose input| awk -f process -

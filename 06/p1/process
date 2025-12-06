@@ -1,0 +1,17 @@
+#!/usr/bin/env awk -f
+{
+    if ($NF == "*") {
+        x = 1
+        for (i = 1; i < NF; i++) {
+            x *= $i
+        }
+    }
+    else if ($NF == "+") {
+        x = 0
+        for (i = 1; i < NF; i++) {
+            x += $i
+        }
+    }
+    r += x
+}
+END { print r }
