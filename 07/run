@@ -1,0 +1,20 @@
+#!/usr/bin/env awk -f
+BEGIN { FS = "" }
+NR == 1 { 
+    for (i = 1; i <= NF; i++) {
+        if ($i == "S") {
+            b[i]= 1
+        }
+    }
+}
+NR > 1 {
+    for (i = 1; i <= NF; i++) {
+        if ($i == "^" && b[i]) {
+            b[i-1]= 1
+            b[i+1]= 1
+            b[i]= 0
+            r += 1
+        }
+    }
+}
+END { print r }
