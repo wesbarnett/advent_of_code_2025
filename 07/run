@@ -10,11 +10,18 @@ NR == 1 {
 NR > 1 {
     for (i = 1; i <= NF; i++) {
         if ($i == "^" && b[i]) {
-            b[i-1]= 1
-            b[i+1]= 1
-            b[i]= 0
+            b[i-1] += b[i]
+            b[i+1] += b[i]
+            b[i] = 0
             r += 1
         }
     }
 }
-END { print r }
+END { 
+    r2 = b[1] - 1
+    for (i = 1; i <= NF; i++) {
+        r2 += b[i]
+    }
+    print r 
+    print r2
+}
