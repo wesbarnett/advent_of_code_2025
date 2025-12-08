@@ -1,0 +1,70 @@
+#!/usr/bin/env gawk -f
+
+function dist(x1, y1, z1, x2, y2, z2) {
+    return (x1 - x2)**2 + (y1 - y2)**2 + (z1 - z2)**2
+}
+
+BEGIN { FS="," }
+{
+    x[NR] = $1
+    y[NR] = $2
+    z[NR] = $3
+}
+END {
+    for (i = 1; i < NR; i++) {
+        for (j = i + 1; j <=NR; j++) {
+            d = dist(x[i], y[i], z[i], x[j], y[j], z[j])
+            distances[d][1] = i
+            distances[d][2] = j
+        }
+    }
+
+    for (i = 1; i <= 10; i++) {
+        min_d = 1e9
+        for (d in distances) {
+            if (int(d) < min_d) {
+                min_d = int(d)
+            }
+        }
+        # print distances[min_d][1], distances[min_d][2]
+        
+        a = distances[min_d][1]
+        b = distances[min_d][2]
+        print a, b
+
+        saved[i][a] = ""
+        saved[i][b] = ""
+
+        for (j in saved) {
+            for (k in saved) {
+                if (j != k) {
+                    if (a in saved[j] && a in saved[k]) {
+                        for (c in saved[k]) { 
+                            saved[j][c] = ""
+                        }
+                        delete saved[k]
+                    }
+                    else if (b in saved[j] && b in saved[k]) {
+                        for (c in saved[k]) { 
+                            saved[j][c] = ""
+                        }
+                        delete saved[k]
+                    }
+                }
+            }
+        }
+
+        for (idx in saved) {
+            for (idx2 in saved[idx]) {
+                printf("%s-", idx2)
+            }
+            printf("\n")
+        }
+        print "---------------"
+#       print min_d, distances[min_d][1], distances[min_d][2]
+        delete distances[min_d]
+    }
+    for (idx in saved) {
+        print length(saved[idx])
+    }
+}
