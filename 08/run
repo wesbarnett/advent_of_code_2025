@@ -20,6 +20,7 @@ END {
     }
 
     for (i = 1; i <= 1000; i++) {
+        print i
         min_d = 1e9
         for (d in distances) {
             if (int(d) < min_d) {
@@ -29,7 +30,6 @@ END {
         
         a = distances[min_d][1]
         b = distances[min_d][2]
-        print a, b
 
         saved[i][a] = ""
         saved[i][b] = ""
