@@ -19,14 +19,13 @@ END {
         }
     }
 
-    for (i = 1; i <= 10; i++) {
+    for (i = 1; i <= 1000; i++) {
         min_d = 1e9
         for (d in distances) {
             if (int(d) < min_d) {
                 min_d = int(d)
             }
         }
-        # print distances[min_d][1], distances[min_d][2]
         
         a = distances[min_d][1]
         b = distances[min_d][2]
@@ -37,34 +36,39 @@ END {
 
         for (j in saved) {
             for (k in saved) {
-                if (j != k) {
-                    if (a in saved[j] && a in saved[k]) {
-                        for (c in saved[k]) { 
-                            saved[j][c] = ""
-                        }
-                        delete saved[k]
+                if (j == k || !j || !k) {
+                    continue
+                }
+                if (a in saved[j] && a in saved[k]) {
+                    for (c in saved[k]) { 
+                        saved[j][c] = ""
                     }
-                    else if (b in saved[j] && b in saved[k]) {
-                        for (c in saved[k]) { 
-                            saved[j][c] = ""
-                        }
-                        delete saved[k]
+                    delete saved[k]
+                }
+                else if (b in saved[j] && b in saved[k]) {
+                    for (c in saved[k]) { 
+                        saved[j][c] = ""
                     }
+                    delete saved[k]
                 }
             }
         }
-
-        for (idx in saved) {
-            for (idx2 in saved[idx]) {
-                printf("%s-", idx2)
-            }
-            printf("\n")
-        }
-        print "---------------"
-#       print min_d, distances[min_d][1], distances[min_d][2]
         delete distances[min_d]
     }
-    for (idx in saved) {
-        print length(saved[idx])
+    r = 1
+    for (i = 1; i <= 3; i++) {
+        max_size = 0
+        for (idx in saved) {
+            size = length(saved[idx])
+            if (size > max_size) {
+                max_idx = idx
+                max_size = size
+            }
+        }
+        print max_size
+        r *= max_size
+        delete saved[max_idx]
     }
+    print "RESULT:", r
 }
+
