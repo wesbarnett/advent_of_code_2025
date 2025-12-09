@@ -25,7 +25,7 @@ END {
         a = D[idx[k]][1]
         b = D[idx[k]][2]
 
-        if ((a in F) && (b in F)) continue
+        if (a in F && b in F) continue
         F[a] = ""
         F[b] = ""
 
