@@ -1,0 +1,39 @@
+#!/usr/bin/env gawk -f
+
+function dist(x1, y1, z1, x2, y2, z2) {
+    return (x1 - x2)**2 + (y1 - y2)**2 + (z1 - z2)**2
+}
+
+BEGIN { FS="," }
+{
+    x[NR] = $1
+    y[NR] = $2
+    z[NR] = $3
+}
+END {
+    # Kruskal's algorithm
+    for (i = 1; i < NR; i++) for (j = i + 1; j <= NR; j++) {
+        d = dist(x[i], y[i], z[i], x[j], y[j], z[j])
+        D[d][1] = i
+        D[d][2] = j
+    }
+
+    asorti(D, idx, "@ind_num_asc")
+
+    for (k in idx) {
+
+        a = D[idx[k]][1]
+        b = D[idx[k]][2]
+
+        if ((a in F) && (b in F)) continue
+        F[a] = ""
+        F[b] = ""
+
+        if (length(F) == NR) {
+            r = x[a]*x[b]
+            break
+        }
+    }
+    print r
+}
+
